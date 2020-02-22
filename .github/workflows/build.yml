@@ -17,7 +17,7 @@ jobs:
     - name: make
       id: make_binary
       env:
-        VERSION_STR: ${{ steps.id.outputs.tag }}
+        VERSION_STR: ${{ steps.get_version.outputs.tag }}
       run: |
         make
         tar -vczf bcl_$VERSION_STR.tar.gz bcl
@@ -38,6 +38,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bcl_${{ steps.id.outputs.tag }}.tar.gz
-        asset_name: bcl_${{ steps.id.outputs.tag }}.tar.gz
+        asset_path: bcl_${{ steps.get_version.outputs.tag }}.tar.gz
+        asset_name: bcl_${{ steps.get_version.outputs.tag }}.tar.gz
         asset_content_type: application/gzip
