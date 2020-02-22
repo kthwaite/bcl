@@ -166,11 +166,12 @@ int cmd_unset() {
 // Print usage text, return passed ErrorCode.
 int usage(ErrorCode retval) {
     printf("bcl: Print time remaining until Brimley-Cocoon Line\n");
+    printf("Calculation is made relative to a date stored in ~/.config/bcl in the form 'YYYY-MM-DD'.\n");
     printf("\n");
-    printf("Commands:\n");
+    printf("Subcommands:\n");
     printf("    help - Print this text\n");
-    printf("    set - Set DOB\n");
-    printf("    unset - Clear DOB\n");
+    printf("    set - Set DOB in config file\n");
+    printf("    unset - Clear DOB, deleting config file\n");
     printf("    when - Print date of Brimley-Cocoon Line\n");
     return retval;
 }
