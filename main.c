@@ -166,7 +166,8 @@ int cmd_unset() {
 // Print usage text, return passed ErrorCode.
 int usage(ErrorCode retval) {
     printf("bcl: Print time remaining until Brimley-Cocoon Line\n");
-    printf("Calculation is made relative to a date stored in ~/.config/bcl in the form 'YYYY-MM-DD'.\n");
+    printf("Calculation is made relative to a date stored in ~/.config/bcl in "
+           "the form 'YYYY-MM-DD'.\n");
     printf("\n");
     printf("Subcommands:\n");
     printf("    help - Print this text\n");
