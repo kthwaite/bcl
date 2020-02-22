@@ -7,8 +7,8 @@
 #include <sys/types.h>
 #include <unistd.h>
 
-const size_t DAY_SECS = 24 * 60 * 60;
-const size_t BRIMLEY_SECS = 15000 * DAY_SECS;
+#define DAY_SECS (24 * 60 * 60)
+#define BRIMLEY_SECS (15000 * DAY_SECS)
 
 typedef enum {
     OK = 0,
@@ -47,7 +47,15 @@ int read_config_file(const char *path, Config *config) {
         return ERR_CONFIG_FILE_NOT_FOUND;
     }
     char buf[11];
-    fread(buf, 1, 10, f);
+    size_t r = fread(buf, 1, 10, f);
+    if(r != 10) {
+        fprintf(
+            stderr,
+            "Config file %s contains invalid date (expected YYYY-MM-DD)\n",
+            path, buf);
+        fprintf(stderr, "Consider running `bcl set`\n");
+        return ERR_CONFIG_FILE_DATE_INVALID;
+    }
     fclose(f);
     struct tm ltm = {0};
     int v = strptime(buf, "%Y-%m-%d", &ltm);
@@ -56,6 +64,7 @@ int read_config_file(const char *path, Config *config) {
             stderr,
             "Config file %s contains invalid date: %s (expected YYYY-MM-DD)\n",
             path, buf);
+        fprintf(stderr, "Consider running `bcl set`\n");
         return ERR_CONFIG_FILE_DATE_INVALID;
     }
     config->birth_date = ltm;
