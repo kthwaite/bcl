@@ -1,5 +1,9 @@
 bcl: main.c
-	@gcc main.c -o bcl -O2
+	@gcc main.c -o bcl -O2 -Werror -Wall
+
+.PHONY: debug
+debug: main.c
+	@gcc main.c -o bcl -O0 -g -Wall -Werror
 
 .PHONY: install
 install: bcl
@@ -8,10 +12,6 @@ install: bcl
 .PHONY: format
 format: main.c
 	clang-format -i main.c -style="{BasedOnStyle: llvm, IndentWidth: 4}"
-
-.PHONY: debug
-debug: main.c
-	@gcc main.c -o bcl -O0 -g
 
 .PHONY: clean
 clean:
