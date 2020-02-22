@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 #define DAY_SECS (24 * 60 * 60)
-#define BRIMLEY_SECS (15000 * DAY_SECS)
+#define BRIMLEY_SECS (18530 * DAY_SECS)
 
 typedef enum {
     OK = 0,
