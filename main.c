@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#define __USE_XOPEN
 #include <time.h>
 
 #include <pwd.h>
@@ -48,18 +49,17 @@ int read_config_file(const char *path, Config *config) {
     }
     char buf[11];
     size_t r = fread(buf, 1, 10, f);
-    if(r != 10) {
-        fprintf(
-            stderr,
-            "Config file %s contains invalid date (expected YYYY-MM-DD)\n",
-            path, buf);
+    if (r != 10) {
+        fprintf(stderr,
+                "Config file %s contains invalid date (expected YYYY-MM-DD)\n",
+                path);
         fprintf(stderr, "Consider running `bcl set`\n");
         return ERR_CONFIG_FILE_DATE_INVALID;
     }
     fclose(f);
     struct tm ltm = {0};
-    int v = strptime(buf, "%Y-%m-%d", &ltm);
-    if (v == 0) {
+    char *v = strptime(buf, "%Y-%m-%d", &ltm);
+    if (v == NULL) {
         fprintf(
             stderr,
             "Config file %s contains invalid date: %s (expected YYYY-MM-DD)\n",
@@ -127,8 +127,8 @@ int cmd_when() {
 // `bcl set` invocation - write or overwrite config file with new date.
 int cmd_set(const char *birth_date) {
     struct tm ltm = {0};
-    int v = strptime(birth_date, "%Y-%m-%d", &ltm);
-    if (v == 0) {
+    char *v = strptime(birth_date, "%Y-%m-%d", &ltm);
+    if (v == NULL) {
         fprintf(stderr, "%s is not a valid date (expected YYYY-MM-DD)\n",
                 birth_date);
         return ERR_CONFIG_FILE_DATE_INVALID;
