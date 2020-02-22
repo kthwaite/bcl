@@ -10,10 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    - name: Get version
+      id: get_version
+      run: echo ::set-output name=tag::${GITHUB_REF:10}
     - name: make
       id: make_binary
       env:
-        VERSION_STR: ${{ github.ref }}
+        VERSION_STR: ${{ steps.id.outputs.tag }}
       run: |
         make
         tar -vczf bcl_$VERSION_STR.tar.gz bcl
@@ -34,6 +37,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: bcl_${{ github.ref }}.tar.gz
-        asset_name: bcl_${{ github.ref }}.tar.gz
+        asset_path: bcl_${{ steps.id.outputs.tag }}.tar.gz
+        asset_name: bcl_${{ steps.id.outputs.tag }}.tar.gz
         content_type: application/gzip
