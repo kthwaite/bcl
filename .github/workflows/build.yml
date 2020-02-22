@@ -12,6 +12,7 @@ jobs:
     - uses: actions/checkout@v2
     - name: Get version
       id: get_version
+      # refs/tags/...
       run: echo ::set-output name=tag::${GITHUB_REF:10}
     - name: make
       id: make_binary
@@ -39,4 +40,4 @@ jobs:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: bcl_${{ steps.id.outputs.tag }}.tar.gz
         asset_name: bcl_${{ steps.id.outputs.tag }}.tar.gz
-        content_type: application/gzip
+        asset_content_type: application/gzip
