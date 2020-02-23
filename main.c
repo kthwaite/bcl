@@ -4,10 +4,6 @@
 #define __USE_XOPEN
 #include <time.h>
 
-#include <pwd.h>
-#include <sys/types.h>
-#include <unistd.h>
-
 #define DAY_SECS (24 * 60 * 60)
 #define BRIMLEY_SECS (18530 * DAY_SECS)
 
@@ -73,8 +69,8 @@ int read_config_file(const char *path, Config *config) {
 
 // Get user config path.
 int get_config_path(char *buf, size_t buf_sz) {
-    struct passwd *pw = getpwuid(getuid());
-    int i = snprintf(buf, buf_sz, "%s/.config/bcl", pw->pw_dir);
+    const char *home = getenv("HOME");
+    int i = snprintf(buf, buf_sz, "%s/.config/bcl", home);
     if (i < 0) {
         return ERR_CONFIG_FILE_PATH_CREATE_FAIL;
     }
