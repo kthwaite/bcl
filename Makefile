@@ -7,7 +7,8 @@ debug: main.c
 
 .PHONY: install
 install: bcl
-	cp bcl "$(HOME)/.local/bin"
+	mkdir -p "$(HOME)/.local/bin"
+	cp bcl "$(HOME)/.local/bin/bcl"
 
 .PHONY: format
 format: main.c
